@@ -31,7 +31,7 @@ var host = Host.CreateDefaultBuilder(args)
                 options.Connection(connectionString);
             }); 
 
-            services.AddTransient<Tests.UseCases.WorkingWithDocuments.UseCase>();
+            services.AddUseCases();
 
         })
         .UseSerilog()
