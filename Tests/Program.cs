@@ -1,5 +1,5 @@
 ﻿using Serilog.Events;
-using Tests.UseCases;
+
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Information()
@@ -31,7 +31,7 @@ var host = Host.CreateDefaultBuilder(args)
                 options.Connection(connectionString);
             }); 
 
-            services.AddTransient<WorkingWithDocuments>();
+            services.AddTransient<Tests.UseCases.WorkingWithDocuments.UseCase>();
 
         })
         .UseSerilog()
@@ -46,7 +46,7 @@ using (host)
     Log.Information("Starting Test Run {timestamp}", DateTime.Now);
 
     // Run your UseCase here
-    await host.RunUseCase<WorkingWithDocuments>();
+    await host.RunUseCase<Tests.UseCases.WorkingWithDocuments.UseCase>();
 
     Log.Information("Ending Test Run {timestamp}", DateTime.Now);
     // Shut down host

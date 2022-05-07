@@ -1,4 +1,4 @@
-﻿namespace Tests.Documents;
+﻿namespace Tests.UseCases.WorkingWithDocuments;
 
 public class ArticleDocument
 {

@@ -1,10 +1,10 @@
-﻿namespace Tests.UseCases;
+﻿namespace Tests.UseCases.WorkingWithDocuments;
 
-internal class WorkingWithDocuments : IUseCase
+internal class UseCase : IUseCase
 {
     private readonly IDocumentStore _Store;
 
-    public WorkingWithDocuments(IDocumentStore store) => _Store = store;
+    public UseCase(IDocumentStore store) => _Store = store;
 
     public async Task ExecuteAsync()
     {
@@ -19,7 +19,6 @@ internal class WorkingWithDocuments : IUseCase
         using var _ = Operation.Time("Deleting all Documents");
         await _Store.Advanced.Clean.DeleteAllDocumentsAsync();
     }
-
 
     private async Task CreateArticleDocumentsAsync()
     {

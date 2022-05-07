@@ -1,4 +1,4 @@
-﻿namespace Tests.Fakers;
+﻿namespace Tests.UseCases.WorkingWithDocuments;
 
 public static class ArticleDocumentFaker
 {
