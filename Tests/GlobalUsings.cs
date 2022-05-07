@@ -6,5 +6,6 @@ global using Bogus;
 global using Marten;
 global using Tests.Documents;
 global using Tests.Fakers;
-global using Tests.UseCases;
 global using Tests.Extensions;
+global using Serilog;
+global using SerilogTimings;

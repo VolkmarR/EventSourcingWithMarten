@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Tests.UseCases;
+using SerilogTimings;
 
-namespace Tests.Extensions
+namespace Tests.Extensions;
+
+static internal class HostExtensions
 {
-    static internal class HostExtensions
+    public async static Task RunUseCase<T>(this IHost host) where T : IUseCase
     {
-        public async static Task RunUseCase<T>(this IHost host) where T : IUseCase
-            => await host.Services.GetRequiredService<T>().ExecuteAsync();
+        using (Operation.Time("Executing UseCase {usecase}", typeof(T).Name))
+            await host.Services.GetRequiredService<T>().ExecuteAsync();
     }
 }
