@@ -2,10 +2,10 @@
 
 
 Log.Logger = new LoggerConfiguration()
-    .MinimumLevel.Information()
+    .MinimumLevel.Debug()
     .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
     .Enrich.FromLogContext()
-    .WriteTo.Console(outputTemplate: "{Timestamp:HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
+    .WriteTo.Console(outputTemplate: "{Timestamp:HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}", restrictedToMinimumLevel: LogEventLevel.Information)
     .WriteTo.File("TestRunLog.txt", outputTemplate: "{Timestamp:HH:mm:ss.fff} [{Level:u3}] {Message:lj}{NewLine}{Exception}")
     .CreateLogger();
 
@@ -29,6 +29,7 @@ var host = Host.CreateDefaultBuilder(args)
                     throw new ArgumentException("Default connection string is not set in the configuration");
 
                 options.Connection(connectionString);
+                options.AddSerilog();
             }); 
 
             services.AddUseCases();
