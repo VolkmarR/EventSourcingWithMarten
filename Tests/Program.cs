@@ -30,6 +30,8 @@ var host = Host.CreateDefaultBuilder(args)
 
                 options.Connection(connectionString);
                 options.AddSerilog();
+
+                Tests.UseCases.SimpleEventsWithNoise.Register.ConfigureEmployees(options);
             }); 
 
             services.AddUseCases();
@@ -47,7 +49,10 @@ using (host)
     Log.Information("Starting Test Run {timestamp}", DateTime.Now);
 
     // Run your UseCase here
-    await host.RunUseCase<Tests.UseCases.WorkingWithDocuments.UseCase>();
+    // await host.RunUseCase<Tests.UseCases.WorkingWithDocuments.UseCase>();
+
+    await host.RunUseCase<Tests.UseCases.SimpleEventsWithNoise.UseCase>();
+    
 
     Log.Information("Ending Test Run {timestamp}", DateTime.Now);
     // Shut down host

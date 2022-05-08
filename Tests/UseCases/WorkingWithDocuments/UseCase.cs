@@ -16,13 +16,15 @@ internal class UseCase : IUseCase
     private async Task InitAsync()
     {
         // Clean out existing documents
-        using var _ = Operation.Time("Deleting all Documents");
-        await _Store.Advanced.Clean.DeleteAllDocumentsAsync();
+        Log.Information("Deleting all Documents");
+        using var _ = Operation.Time(">> Duration");
+            await _Store.Advanced.Clean.DeleteAllDocumentsAsync();
     }
 
     private async Task CreateArticleDocumentsAsync()
     {
-        using var _ = Operation.Time("Creating 100 ArticleDocuments");
+        Log.Information("Creating 100 ArticleDocuments");
+        using var _ = Operation.Time(">> Duration");
         using var session = _Store.LightweightSession();
 
         for (int i = 0; i < 100; i++)
@@ -51,6 +53,5 @@ internal class UseCase : IUseCase
         Log.Information("Filtering with Code");
         var spec = await session.Query<ArticleDocument>().SingleOrDefaultAsync(q => q.Code == "AC000005");
         Log.Information("Item found: {code}", spec?.Code);
-
     }
 }
