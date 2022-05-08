@@ -1,5 +1,5 @@
 ﻿using Serilog.Events;
-
+using Tests.UseCases.EventSourcingTakeTwo;
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -22,17 +22,20 @@ var host = Host.CreateDefaultBuilder(args)
         })
         .ConfigureServices((hostingContext, services) =>
         {
+            var connectionString = hostingContext.Configuration.GetConnectionString("Default");
+            if (string.IsNullOrEmpty(connectionString))
+                throw new ArgumentException("Default connection string is not set in the configuration");
+
             services.AddMarten(options =>
             {
-                var connectionString = hostingContext.Configuration.GetConnectionString("Default");
-                if (string.IsNullOrEmpty(connectionString))
-                    throw new ArgumentException("Default connection string is not set in the configuration");
 
                 options.Connection(connectionString);
                 options.AddSerilog();
 
                 Tests.UseCases.SimpleEventsWithNoise.Register.ConfigureEmployees(options);
-            }); 
+            });
+
+            services.AddEventSourcingTakeTwoStore(connectionString);
 
             services.AddUseCases();
 
@@ -51,8 +54,10 @@ using (host)
     // Run your UseCase here
     // await host.RunUseCase<Tests.UseCases.WorkingWithDocuments.UseCase>();
 
-    await host.RunUseCase<Tests.UseCases.SimpleEventsWithNoise.UseCase>();
-    
+    // await host.RunUseCase<Tests.UseCases.SimpleEventsWithNoise.UseCase>();
+
+    await host.RunUseCase<EventSourcingTakeTwo.UseCase>();
+
 
     Log.Information("Ending Test Run {timestamp}", DateTime.Now);
     // Shut down host
